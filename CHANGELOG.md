@@ -15,3 +15,5 @@ Created initial README, agent guidance, research outline, roadmap, acceptance ch
 - Documented actual Overleaf MCP/configuration blockers and locally verified ZIP fallback (`956bb7a`); no service operation was fabricated.
 - Moved local tools to ignored `.tools/` for persistence, rechecked tool lookup and smoke compilation, and updated release instructions/acceptance evidence. Generated comparison files retain native whitespace under repository attributes.
 - Authors, physical implementation verification, actual E1-E5 results and live Overleaf execution remain pending. Final normal GitHub push occurs only after the public-package validation; no force push or unrelated repository mutation is used.
+
+- Final atomic publication succeeded at `8b03980`; a separate live remote query verified main and both annotated/peeled tags. Preserved the observed publication receipt in a subsequent documentation commit without moving version tags.

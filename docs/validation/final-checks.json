@@ -1,5 +1,5 @@
 {
-  "checks_passed": 208,
+  "checks_passed": 209,
   "checks": [
     "v1 exact source file set",
     "v1 source hash README.md",
@@ -127,6 +127,7 @@
     "no secret pattern docs/environment-setup.md",
     "no secret pattern docs/final-validation.md",
     "no secret pattern docs/overleaf-setup.md",
+    "no secret pattern docs/push-receipt.md",
     "no secret pattern docs/validation/final-checks.json",
     "no secret pattern docs/validation/v1-build.json",
     "no secret pattern docs/validation/v1-openspec.json",
@@ -210,7 +211,7 @@
     "archived course artifact 2026-11-25-revise-ieee-conference-paper/tasks.md",
     "completed archive task list 2026-11-25-revise-ieee-conference-paper"
   ],
-  "secret_scan_text_files": 84,
+  "secret_scan_text_files": 85,
   "manual_review_required": "Source meaning, citations and visual quality are attested in version reports; this script cannot prove absence of all sensitive data or research validity.",
   "research_results": "E1-E5 pending; no measured research data generated",
   "overleaf": "No live MCP/service verification; local ZIP compilation recorded separately"

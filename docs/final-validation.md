@@ -45,3 +45,5 @@ Generated comparison files intentionally retain native diff whitespace under `.g
 ## Publication execution
 
 The user explicitly authorized the final normal push to `bambamboo0321/AIoT-DIC4`, including the two new version tags. This report is a pre-publication validation record. Check origin before pushing, publish the prepared commits/tags without force, then verify remote branch/tag targets and record actual transport results. Do not interpret authorization as a successful network operation before it happens.
+
+The prepared publication batch subsequently succeeded; live branch/tag targets were independently verified. See [observed push receipt](push-receipt.md) for exact public SHAs and transport outcome.

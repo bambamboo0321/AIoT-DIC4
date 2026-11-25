@@ -25,6 +25,8 @@ The [latest prospective protocol](experiments/evaluation-plan-v2.md) covers E1 w
 - [Final automated checks](docs/validation/final-checks.json) verify frozen hashes, ZIP members, readable PDFs, embedded fonts, completed archives and selected secret patterns. Manual content/visual review remains necessary.
 - [Build and package instructions](docs/build-instructions.md) describe the ordinary TeX Live dependencies and reproducible commands. No private implementation repository is needed to build these manuscripts.
 
+The authorized publication batch succeeded; see the [live-verified push receipt](docs/push-receipt.md) for the observed branch and annotated-tag targets.
+
 ## Overleaf and remaining prerequisites
 
 **Overleaf MCP was unavailable:** no authorized project/token/live server connection was supplied. [Configuration investigation and fallback](docs/overleaf-setup.md) distinguish actual observations from future setup. Both ZIPs compiled independently locally; online Overleaf import/compilation remains unverified.
