@@ -1,0 +1,30 @@
+{
+  "items": [
+    {
+      "id": "initialize-ieee-paper",
+      "type": "change",
+      "valid": true,
+      "issues": [],
+      "durationMs": 21
+    }
+  ],
+  "summary": {
+    "totals": {
+      "items": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "byType": {
+      "change": {
+        "items": 1,
+        "passed": 1,
+        "failed": 0
+      }
+    }
+  },
+  "version": "1.0",
+  "cli_version": "2.2.0",
+  "command": "openspec validate initialize-ieee-paper --strict --json --no-interactive",
+  "stage": "pre-drafting",
+  "note": "Host root omitted. Validation checks schema, not implementation completion."
+}

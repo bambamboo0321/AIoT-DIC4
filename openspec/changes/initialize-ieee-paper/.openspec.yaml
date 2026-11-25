@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-11-25
+goal: Produce a complete evidence-bounded IEEE conference V1 with reproducible
+  build and independent Overleaf archive.
