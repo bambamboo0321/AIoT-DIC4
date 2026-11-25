@@ -1,0 +1,24 @@
+# Secrets and private data
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+private/
+# LaTeX build intermediates (retain intentional deliverable PDFs)
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.bcf
+*.run.xml
+.DS_Store
+node_modules/
