@@ -1,19 +1,20 @@
-# DIC4 execution roadmap
+# DIC4 execution roadmap and observed status
 
-## Phase 0 — Environment audit
-Inspect repository, local tools and MCP availability. Record versions, missing prerequisites and proposed remediation in docs/environment-audit.md. Stop for user review.
+The user's 2026-11-25 continuous-execution instruction superseded the initial stop-after-Phase-0 gate and authorized necessary configuration, staged commits and final push. Preserve one logical phase at a time; no author, credential or measurement is inferred from that authorization.
 
-## Phase 1 — V1 initial paper
-Create and validate OpenSpec change initialize-ieee-paper before editing. Use IEEEtran conference class. Draft abstract, introduction, related work, system architecture, methods, evaluation plan, limitations and conclusion. Verify sources; distinguish planned evaluation from results. Compile, inspect and package independent V1 source/PDF/ZIP. Commit and tag after validation.
+| Phase | Observed outcome |
+|---|---|
+| 0 — Environment audit | Complete; original failures preserved in `environment-audit.md`; standalone commit `d62f977` |
+| 0.5 — Configuration | Reliable matching GitHub noreply identity set repo-locally; OpenSpec 2.2.0 and lightweight portable TinyTeX configured; IEEE/BibTeX/diff smoke tests pass; Poppler installed |
+| 1 — Initial V1 | Prior validated change, full IEEE source, 5-page PDF, clean ZIP rebuild, page review; commit/tag and verified archive |
+| 2 — V1 academic review | Actual artifact review R1-R9; separate commit `6a8971e` |
+| 3 — V2 revision | Prior validated review-mapped change; independent 7-page source/PDF/ZIP, true 8-page latexdiff and traceability report; commit/tag and verified archive |
+| 4 — Follow-up review / V3 | Actual V2 review complete; no additional blocking manuscript-method issue identified; V3 deferred until substantive evidence/feedback |
+| 5 — Overleaf | No live configured/authenticated MCP; configuration investigation documented and independently built ZIP fallback supplied |
+| 6 — Final validation / publication | Public package and links checked; final commits/tags published only through the authorized normal push; transport outcome recorded separately after execution |
 
-## Phase 2 — Academic review
-Review actual V1 as an IEEE-style reviewer. Assign issue IDs and severity, identify evidence gaps and reproducibility issues; save reviews/v1-review.md. Do not invent reviews that did not occur.
+## Future substantive V3
 
-## Phase 3 — V2 revision
-Create a new OpenSpec change based on review findings before editing. Preserve V1; revise actual manuscript, compile and inspect V2, generate latexdiff or documented comparison, create review-to-change traceability report. Validate change, commit, tag, archive when appropriate.
+Begin only with actual new evidence or review. Create and validate a fresh change before editing, preserve both earlier snapshots, revise methodology or measured findings as warranted, compile and inspect the new artifacts, update issue-to-change evidence and archive only after verification.
 
-## Phase 4 — V3 research refinement
-Proceed only after V2 review. Improve methodology, experiment protocol and evidence alignment based on actual feedback or new evidence. Use separate change and validation. Results remain pending until measured.
-
-## Phase 5 — Overleaf and delivery
-Discover configured Overleaf MCP; if available, demonstrate authorized read/edit/verification and record sanitized evidence. Otherwise record blocker and offer verified import ZIPs. Update README with actual artifact links and tags. Final results revision follows genuine experiments, not a fabricated deadline.
+E1-E5 results remain pending. Authors/affiliations need team confirmation. Hardware, participant work and live Overleaf authorization remain separate prerequisites; they are not silently completed by this delivery.

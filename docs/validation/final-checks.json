@@ -1,5 +1,5 @@
 {
-  "checks_passed": 202,
+  "checks_passed": 208,
   "checks": [
     "v1 exact source file set",
     "v1 source hash README.md",
@@ -122,14 +122,19 @@
     "no secret pattern docs/ACCEPTANCE_CRITERIA.md",
     "no secret pattern docs/PROJECT_CONTEXT.md",
     "no secret pattern docs/ROADMAP.md",
+    "no secret pattern docs/build-instructions.md",
     "no secret pattern docs/environment-audit.md",
     "no secret pattern docs/environment-setup.md",
+    "no secret pattern docs/final-validation.md",
+    "no secret pattern docs/overleaf-setup.md",
+    "no secret pattern docs/validation/final-checks.json",
     "no secret pattern docs/validation/v1-build.json",
     "no secret pattern docs/validation/v1-openspec.json",
     "no secret pattern docs/validation/v1-preflight.json",
     "no secret pattern docs/validation/v1-v2-diff.json",
     "no secret pattern docs/validation/v1-validation.md",
     "no secret pattern docs/validation/v2-build.json",
+    "no secret pattern docs/validation/v2-openspec.json",
     "no secret pattern docs/validation/v2-preflight.json",
     "no secret pattern docs/validation/v2-validation.md",
     "no secret pattern experiments/README.md",
@@ -188,6 +193,7 @@
     "no secret pattern reviews/README.md",
     "no secret pattern reviews/revision-report.md",
     "no secret pattern reviews/v1-review.md",
+    "no secret pattern reviews/v2-review.md",
     "no secret pattern scripts/build.py",
     "no secret pattern scripts/build_diff.py",
     "no secret pattern scripts/verify_release.py",
@@ -204,7 +210,7 @@
     "archived course artifact 2026-11-25-revise-ieee-conference-paper/tasks.md",
     "completed archive task list 2026-11-25-revise-ieee-conference-paper"
   ],
-  "secret_scan_text_files": 78,
+  "secret_scan_text_files": 84,
   "manual_review_required": "Source meaning, citations and visual quality are attested in version reports; this script cannot prove absence of all sensitive data or research validity.",
   "research_results": "E1-E5 pending; no measured research data generated",
   "overleaf": "No live MCP/service verification; local ZIP compilation recorded separately"

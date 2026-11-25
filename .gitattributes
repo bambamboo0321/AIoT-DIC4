@@ -1,0 +1,4 @@
+# Generated comparison files preserve their native diff whitespace.
+# Unified-diff context blank lines contain a required leading space.
+deliverables/*.diff -whitespace
+deliverables/SmartIntake_V1_V2_Diff.tex -whitespace

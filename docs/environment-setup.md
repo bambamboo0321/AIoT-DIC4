@@ -55,3 +55,9 @@ No Overleaf project ID, token or authenticated MCP connection was supplied. No s
 ## Verification completion
 
 Installed `ulem`, `grfext`, `preprint` and `cite` after explicit missing-package checks. A retry initially retained latexmk's prior failed state; forced regeneration exposed the remaining `grfext` dependency. After installing it, `latexmk -g -pdf -interaction=nonstopmode -halt-on-error diff.tex` exited 0 and produced the smoke difference PDF. IEEEtran/BibTeX and latexdiff smoke builds now both pass. These are environment tests, not research measurements. Manuscript-specific checks are recorded per version.
+
+## Final local tool paths
+
+After V2 delivery, relocated the verified tool installations from the temporary prefix into repository-local **ignored** directories: `.tools/texlive` and `.tools/openspec`. This avoids OS temporary-directory cleanup. `.gitignore` excludes the complete `.tools/` tree, confirmed with `git check-ignore`; no dependency binaries or caches are published. No global PATH or Git identity setting changed.
+
+After relocation, OpenSpec returned 2.2.0, tlmgr reported revision 80687 with the new installation root, and `kpsewhich` resolved both IEEEtran files under the new root. The forced IEEE/BibTeX/latexdiff smoke build again exited 0. Recorded manuscript/PDF/ZIP hashes were not altered. See [build instructions](build-instructions.md) for per-shell commands; a new clone must supply its own tools.

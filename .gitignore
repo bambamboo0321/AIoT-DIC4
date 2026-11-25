@@ -22,3 +22,6 @@ private/
 *.run.xml
 .DS_Store
 node_modules/
+
+# Local dependency installations (never publish binaries or caches)
+.tools/
