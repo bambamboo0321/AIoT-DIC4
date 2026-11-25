@@ -32,7 +32,7 @@ SmartIntake is a proposed fixed-workplace IoT and tool-grounded AI agent system 
 
 | Stage | Status |
 |---|---|
-| Environment initialization | In progress |
+| Environment initialization | Complete |
 | V1 initial manuscript | Not started |
 | V2 review-driven revision | Not started |
 | V3 methodology and evidence refinement | Planned |
