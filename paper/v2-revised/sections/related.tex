@@ -1,0 +1,24 @@
+\section{Related Work}\label{sec:related}
+\subsection{Hydration and Dietary Self-Monitoring}
+Playful Bottle explored office hydration through a phone attached to a mug, vision/motion sensing, and social persuasion~\cite{chiu2009}. This establishes relevant workplace context, but its sensing and persuasive-interaction objectives differ from a shared stationary weighing service. Cohen \textit{et al.} compared commercial smart bottles against a reference scale and discussed missed records and ambiguous liquid loss~\cite{cohen2022}. Their study motivates separate checks of quantity accuracy and event interpretation; its results cannot be transferred to the proposed hardware.
+
+Burke \textit{et al.} reviewed dietary, exercise, and weight self-monitoring and emphasized methodological limitations and adherence measurement~\cite{burke2011}. For \sys{}, a shorter entry procedure is a hypothesis to test with observed tasks. Food mass also requires an identified item and a documented nutrient basis: a scale cannot infer a mixed meal's composition. FoodData Central documents multiple data types and their provenance~\cite{usda}; records should retain the selected food identifier and data release rather than treat a generated food description as a nutrient source.
+
+\subsection{Tool Use and Provenance}
+ReAct interleaves language-model reasoning and actions, while Toolformer studies learning when and how to invoke APIs~\cite{yao2023react,schick2023}. We adopt the narrower engineering principle that external tools should supply facts and arithmetic. We do not claim to reproduce those training procedures. The $\tau$-bench study evaluates tool-agent-user interactions and repeated reliability under domain policies~\cite{yao2024tau}; it motivates testing more than a single successful conversation. W3C PROV-DM distinguishes entities, activities, derivation, and responsible agents~\cite{prov}. This informs our provenance chain without claiming formal PROV conformance.
+
+\begin{table}[t]
+\caption{Selected research perspectives and their relevance. The final column is our design interpretation, not a benchmark result.}\label{tab:related}
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}P{.19\columnwidth}P{.31\columnwidth}P{.42\columnwidth}@{}}\toprule
+Work & Studied focus & SmartIntake design implication\\\midrule
+Bottle~\cite{chiu2009} & Workplace sensing and persuasion & Examine routine recording in a fixed setting\\
+Smart bottles~\cite{cohen2022} & Quantity and recording accuracy & Separate mass accuracy from ingestion labels\\
+Tools~\cite{yao2023react,schick2023} & Model interaction with tools & Keep arithmetic in backend tools\\
+$\tau$-bench~\cite{yao2024tau} & Policy and repeated agent reliability & Test authorization and repeatability\\\bottomrule
+\end{tabular}
+\end{table}
+
+The gap addressed here is the joint treatment of ambiguous stationary sensing, shared-device attribution, and evidence-preserving conversational retrieval within this selected literature. This is a scoped integration contribution; it is not a claim that no prior system combines these features.
+
+The distinction is operational: the hydration comparison motivates an independent physical oracle (E1/E2), workplace interaction motivates a measured effort comparison (E4), and policy-oriented tool evaluation motivates subject isolation and repeated scoring (E5). Combining these concerns imposes session coordination and query-snapshot obligations that are specified below. This is our synthesis of the selected works, not evidence that those works lack every related mechanism.

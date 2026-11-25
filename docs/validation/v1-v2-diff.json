@@ -1,0 +1,28 @@
+{
+  "command": "latexdiff --flatten --type=CFONT --math-markup=whole --graphics-markup=none paper/v1-initial/main.tex paper/v2-revised/main.tex",
+  "latexdiff_exit": 0,
+  "latexmk_exit": 0,
+  "bibliography_flattened": true,
+  "style_adjustments": "Equivalent IEEE bibliography URL-font setup, math-safe CFONT deletion font and Toolformer hyphenation; newly introduced lifecycle table rendered as one intact blue block to prevent cross-table token alignment. No changed content removed.",
+  "markup": "CFONT: added text blue, removed text red (smaller in prose; normal math size); not a clean manuscript",
+  "warning": "WARNING: listings package not detected. Disabling mark-up in verbatim environments",
+  "overfull_boxes": 0,
+  "changed_paths": [
+    "README.md",
+    "figures/states.tex",
+    "preamble.tex",
+    "references.bib",
+    "sections/discussion.tex",
+    "sections/evaluation.tex",
+    "sections/introduction.tex",
+    "sections/method.tex",
+    "sections/related.tex"
+  ],
+  "pdf_pages": 8,
+  "artifacts": {
+    "SmartIntake_V1_V2_Diff.tex": "8623e7a71273f4936b3f69fad45b03d0da28953f7edc07b22662bb14d6afd81d",
+    "SmartIntake_V1_V2_Diff.pdf": "e35ac5dc205981c0a6fb0d8c393e78c61054b913c5b0d1dbe3a4fde4a6f7f910",
+    "V1_V2_source.diff": "a20d855f88233d5162a38520acb010f85b5f3a3b9642be6743c5e9a53e580fb3"
+  },
+  "visual_inspection": "pending; see version validation report"
+}

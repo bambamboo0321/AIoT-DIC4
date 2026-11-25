@@ -1,0 +1,12 @@
+\section{System Architecture}\label{sec:architecture}
+Figure~\ref{fig:architecture} shows the proposed data path and trust boundaries. Two separate Load Cell/HX711 assemblies connect to a Raspberry Pi 4: one for hydration and one for food. A Python worker calibrates readings, estimates stable mass, detects temporal transitions, and queues observations during outages. Calibration and device identifiers accompany events. Hardware capacity, mounting, sample rate, and measured stability must be documented when the prototype is built.
+
+\input{figures/architecture}
+
+FastAPI accepts authenticated device events and user actions. Supabase PostgreSQL stores observations, candidate events, device-session versions, food definitions, confirmed or inferred records, and append-only corrections. A unique event identifier prevents duplicate ingestion on retries. Storage is a design choice; neither a deployed schema nor transactional behavior has been verified in this study.
+
+The Discord interaction layer authenticates the person selecting an active session, choosing food, confirming an ambiguous event, or reversing an inferred record. Three users share the two scales in the intended pilot. The active physical session applies to both scales. The identity used for a conversational query remains the authenticated Discord requestor, independent of whoever currently owns the scales. Changing the active session must not redirect another person's analytics request.
+
+The n8n workflow routes a question to an allowlisted tool service. Six read-only tool functions cover daily hydration, hydration history, food history, nutrition summaries, goal progress, and record sources. FastAPI derives the authorized subject from trusted service and user context; a language-model-generated user identifier has no authority. Calculations and date filtering occur behind that boundary. Tools return data, units, sources, warnings, and explicit statuses distinguishing success, no data, forbidden access, invalid requests, and upstream failures.
+
+Raw scale data and personal food histories are sensitive. Devices should receive only ingestion privileges, and agent credentials should expose only the minimum read operations. Supabase service-role credentials must remain server-side. Neither a bot token nor a workflow export containing credentials belongs in the public manuscript package. The proposed architecture requires authenticated transport, request validation, and access isolation; these are requirements for future implementation tests, not security certification.

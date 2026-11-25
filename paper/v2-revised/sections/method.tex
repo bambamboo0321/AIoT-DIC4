@@ -1,0 +1,57 @@
+\section{Proposed Methodology}\label{sec:method}
+\subsection{Calibration and Stable Observations}
+Let $r_i$ be an HX711 reading and $\hat m_i$ calibrated mass in g. Fit a linear per-scale model using reference loads,
+\begin{equation}\hat m_i=a r_i+b.\label{eq:calibration}\end{equation}
+A median over $W$ samples estimates stable mass. A window is valid only if all samples are valid, within the documented operating range, and its range remains at most $\epsilon$ for dwell time $T_s$. Saturation, stale samples and sensor errors invalidate it. A reference must be reacquired after restart, remounting or container reset. Calibration coefficients and uncertainty belong to one scale/mounting version.
+
+The pre-test parameter manifest must freeze sampling rate $f_s$, window size $W$, $\epsilon$, $T_s$, absence threshold $\theta_L$, minimum positive difference $\theta_D$, maximum absence duration $T_A$, allowed mass range $[0,M]$, and density approximation $\rho$. Presence requires stable mass above $\theta_L$; absence requires mass below it for $T_s$. Values depend on calibration and the chosen vessel, and are not supplied as validated constants. A setup pilot selects them before held-out evaluation; every change creates a new manifest version.
+
+\subsection{Hydration Lifecycle and Candidate Events}
+Figure~\ref{fig:fsm} remains a high-level workflow; Table~\ref{tab:states} defines its lifecycle guards. The lift transition durably binds the pre-lift observations, calibration and session grant to a unique event. The sensor continues observing an in-flight event through a user switch. Invalid or unresolved comparisons cannot establish a new inferred-intake baseline without explicit reset and reacquisition.
+
+\input{figures/states}
+
+For a consistent vessel and two valid stable masses,
+\begin{equation}\Delta m=\bar m_{\rm before}-\bar m_{\rm after},\qquad
+\hat V=\frac{\Delta m}{\rho}.\label{eq:volume}\end{equation}
+Here $\rho$ is in g/mL and $\hat V$ in mL. The approximation $\rho\approx1$ is declared for water only. A positive $\Delta m>\theta_D$ within the plausible range produces a candidate; $\Delta m<-\theta_D$ is refill-like, and $|\Delta m|\leq\theta_D$ is no detected change. Container substitution, a timeout or an invalid range is unresolved even if a difference can be calculated. The system does not automatically identify a new vessel.
+
+\input{figures/fsm}
+
+For uncertainty estimates $u_b,u_a$ of the stable pre/post masses,
+\begin{equation}u_{\Delta}^2=u_b^2+u_a^2-2\operatorname{Cov}(\bar m_b,\bar m_a).
+\label{eq:uncertainty}\end{equation}
+The root-sum-square shortcut is justified only if that covariance is negligible. Drift can correlate the observations; Eq.~\eqref{eq:uncertainty} specifies propagation, not an estimated confidence bound. E1 must estimate uncertainty before thresholds or detection limits are interpreted.
+
+A normal candidate may create a reversible inferred record; ambiguous candidates require an authenticated user response. A confirmation is a human report, not physiological ground truth. Preserve observation, candidate, disposition and correction links. Rejection or correction appends a revision rather than overwriting the original event. A spill can still imitate a drink, so inferred totals must remain identifiable.
+
+\subsection{Food Quantities and Current-Revision Totals}
+For an identified single food with known preparation state,
+\begin{equation}\begin{aligned}
+m_{\rm net}&=m_{\rm gross}-m_{\rm tare},\\
+\hat n_j&=\frac{m_{\rm net}}{100\ {\rm g}}c_j,
+\end{aligned}\label{eq:nutrition}\end{equation}
+where $c_j$ carries nutrient $j$'s unit per 100 g. Negative net mass, unstable input or an unknown tare is invalid and requires re-taring. An explicitly observed empty tared container can represent zero; unknown mass cannot. Retain food ID, preparation state, source release, quantity basis and units. Missing composition remains null, not zero. Mixed meals without component weights use visibly labeled reference portions rather than applying Eq.~\eqref{eq:nutrition} to container gross mass~\cite{usda}.
+
+Let $\mathcal R(q)$ contain only the current, non-rejected revision of each logical intake record at snapshot $q$. Inferred and confirmed hydration are reported separately:
+\begin{equation}H_s(I,q)=\sum_{\substack{r\in\mathcal R(q),\ t_r\in I\\\operatorname{status}(r)=s}} V_r,
+\quad s\in\{\mathrm{inferred},\mathrm{confirmed}\}.\label{eq:totals}\end{equation}
+Corrections supersede prior revisions atomically; a record contributes to at most one status partition. Nutrients sum only known compatible units over the same current revisions and return a missing-component count. A displayed total must identify partial coverage; it cannot imply complete dietary intake. Use unrounded backend quantities for sums and round only at presentation.
+
+\subsection{Coordinated Multi-User Session Switching}
+A shared monotonic session version $v$ covers both scales. Each event binds $v_e=v(t_{\rm start})$ and its owner through a device-authenticated, server-issued grant; upload time never determines ownership. A backend transaction alone is insufficient when workers hold stale state. We therefore propose a switch barrier:
+\begin{enumerate}
+\item Pause new event starts on both workers. Each durably logs and acknowledges its in-flight event IDs, sequence watermark and old session version. Existing events may finish under that binding.
+\item After both acknowledgements, FastAPI commits the new version using compare-and-swap. Historical in-flight bindings are retained; no version number is reused.
+\item Install the new grant on both workers. Activate new starts only after both acknowledge installation; each worker must observe the activation before resuming.
+\end{enumerate}
+A lost pause/install acknowledgement or disconnected worker prevents activation; physical actions during the hold are marked unresolved. Failed attempts remain logged and any committed-but-inactive version is never silently rolled back or reused. Historical completions are accepted only for the registered event IDs and authenticated sequence context. Duplicate IDs are idempotent; conflicting payloads are rejected. A restarted worker must resynchronize grants before new starts, while recoverable durable in-flight events retain their original owner. Unrecognized old starts, expired grants and unverifiable replay are quarantined. Grant freshness limits and sequence persistence belong in the pre-test manifest. This trades availability for attributable records and requires future implementation tests.
+
+\subsection{Consistent, Authorized Agent Retrieval}
+The retrieval flow in Fig.~\ref{fig:tools} uses six allowlisted read-only query functions (daily hydration, hydration history, food history, nutrition summary, goal progress and record sources). FastAPI derives the subject from authenticated user/service context; model-supplied identity is ignored for authorization. Tool requests validate schema, bounded date range and units before database access. Food descriptions and retrieved text are untrusted data and cannot issue tool instructions or expand the allowlist.
+
+A local day is $[d\ 00{:}00,(d+1)\ 00{:}00)$ in the declared IANA timezone, with each boundary converted to UTC. It is not assumed to be exactly 24 hours. Multi-day queries use the same half-open rule. A read-consistent database transaction supplies both totals and their source revisions at one snapshot $q$; concurrent correction must not mix old sources with new totals.
+
+Every result includes status, authorized subject binding, interval/timezone, snapshot identifier, units, completeness and missing counts, source record/revision IDs, quantity-basis and food/calibration versions where applicable, and tool/schema version. Daily response envelopes distinguish complete observed zero, no observations, partial coverage, denied access and upstream failure. Denied responses expose no other user's record existence or IDs. The model may summarize only returned facts; numeric and provenance consistency are checked separately in E5. Corrections are authenticated interface actions, never agent writes.
+
+\input{figures/tools}

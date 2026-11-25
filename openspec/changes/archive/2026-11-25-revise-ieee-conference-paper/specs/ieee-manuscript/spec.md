@@ -62,4 +62,3 @@ The revised manuscript SHALL provide readable comparison tables and printed link
 #### Scenario: R9 release review
 - **WHEN** a reviewer opens V2 and the revision report
 - **THEN** table text and reference links are readable and each issue maps to a source difference and observed acceptance check.
-

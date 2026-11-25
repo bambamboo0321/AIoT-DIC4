@@ -1,0 +1,12 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\footnotesize,box/.style={draw,align=center,text width=60mm,minimum height=7mm},arr/.style={-{Stealth[length=1.6mm]}}]
+\node[box] (a) {Discord request + verified user context};
+\node[box,below=4mm of a] (b) {n8n selects allowlisted read-only tool};
+\node[box,below=4mm of b] (c) {FastAPI validates authorization and arguments};
+\node[box,below=4mm of c] (d) {Deterministic query / arithmetic + source IDs};
+\node[box,below=4mm of d] (e) {Answer with units, missingness and provenance};
+\draw[arr](a)--(b);\draw[arr](b)--(c);\draw[arr](c)--(d);\draw[arr](d)--(e);
+\end{tikzpicture}
+\caption{Agent-tool workflow. A model-selected tool does not confer authorization; server checks precede data access.}\label{fig:tools}
+\end{figure}

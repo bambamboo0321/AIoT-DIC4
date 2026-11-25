@@ -1,0 +1,234 @@
+--- paper/v1-initial/README.md
++++ paper/v2-revised/README.md
+@@ -1,6 +1,6 @@
+-# SmartIntake V1 source
++# SmartIntake V2 source
+ 
+-Initial IEEE conference design manuscript. Authors/affiliations are pending. No formal E1-E5 results are available.
++Review-driven IEEE conference design manuscript. Authors/affiliations are pending. No formal E1-E5 results are available.
+ 
+ Build with an ordinary TeX Live installation containing IEEEtran, latexmk, BibTeX, pgf, booktabs and preprint:
+ 
+--- paper/v1-initial/figures/states.tex
++++ paper/v2-revised/figures/states.tex
+@@ -0,0 +1,13 @@
++\begin{table*}[t]
++\caption{Proposed hydration lifecycle. Parameters are calibrated and frozen before evaluation; no threshold value is claimed as measured.}\label{tab:states}
++\centering\footnotesize\setlength{\tabcolsep}{4pt}
++\begin{tabular}{@{}P{.13\textwidth}P{.35\textwidth}P{.44\textwidth}@{}}\toprule
++State & Guard / next state & Output and re-arming rule\\\midrule
++INIT & Valid stable vessel and current grant $\to$ PRESENT & Acquire baseline; no intake output. Invalid input stays INIT.\\
++PRESENT & Absence for $T_s$ $\to$ ABSENT & Start one durable event and bind pre-mass/session; contact noise leaves state unchanged.\\
++ABSENT & Return before $T_A$ $\to$ RETURN; timeout $\to$ RESOLVE & Retain pre-mass and owner; do not create repeated lift events.\\
++RETURN & Stable valid window $\to$ CLASSIFY; new loss $\to$ ABSENT & No quantity until stable; the original timeout bounds the entire event.\\
++CLASSIFY & Valid vessel/range and $\Delta m$ $\to$ disposition; otherwise RESOLVE & Candidate, refill-like or no-change; save evidence and enter PRESENT with the validated post-mass.\\
++RESOLVE & Explicit user resolution/reset plus stable reacquisition $\to$ INIT & No inferred intake from invalid comparison; vessel changes always require reset.\\\bottomrule
++\end{tabular}
++\end{table*}
+--- paper/v1-initial/preamble.tex
++++ paper/v2-revised/preamble.tex
+@@ -1,7 +1,8 @@
+ \usepackage[T1]{fontenc}
+-\usepackage{cite,amsmath,amssymb,graphicx,booktabs,url,balance}
++\usepackage{array,cite,amsmath,amssymb,graphicx,booktabs,url,balance}
+ \usepackage{tikz}
+ \usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit}
+ \newcommand{\sys}{SmartIntake}
+ \newcommand{\pending}{\textit{planned; not measured}}
+ \hyphenation{Post-gre-SQL Fast-API Smart-Intake}
++\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+--- paper/v1-initial/references.bib
++++ paper/v2-revised/references.bib
+@@ -1,13 +1,13 @@
+ @inproceedings{chiu2009,
+  author={Meng-Chieh Chiu and Shih-Ping Chang and Yu-Chen Chang and Hao-Hua Chu and Cheryl Chia-Hui Chen and Fei-Hsiu Hsiao and Ju-Chun Ko},
+  title={Playful Bottle: A Mobile Social Persuasion System to Motivate Healthy Water Intake},
+- booktitle={Proceedings of the 11th International Conference on Ubiquitous Computing},year={2009},pages={185--194},doi={10.1145/1620545.1620574}}
++ booktitle={Proceedings of the 11th International Conference on Ubiquitous Computing},year={2009},pages={185--194},url={https://doi.org/10.1145/1620545.1620574},doi={10.1145/1620545.1620574}}
+ @article{cohen2022,
+  author={Rachel Cohen and Geoff Fernie and Atena {Roshan Fekr}},title={Monitoring fluid intake by commercially available smart water bottles},
+- journal={Scientific Reports},year={2022},volume={12},number={1},pages={4402},doi={10.1038/s41598-022-08335-5}}
++ journal={Scientific Reports},year={2022},volume={12},number={1},pages={4402},url={https://doi.org/10.1038/s41598-022-08335-5},doi={10.1038/s41598-022-08335-5}}
+ @article{burke2011,
+  author={Lora E. Burke and Jing Wang and Mary Ann Sevick},title={Self-Monitoring in Weight Loss: A Systematic Review of the Literature},
+- journal={Journal of the American Dietetic Association},year={2011},volume={111},number={1},pages={92--102},doi={10.1016/j.jada.2010.10.008}}
++ journal={Journal of the American Dietetic Association},year={2011},volume={111},number={1},pages={92--102},url={https://doi.org/10.1016/j.jada.2010.10.008},doi={10.1016/j.jada.2010.10.008}}
+ @inproceedings{yao2023react,
+  author={Shunyu Yao and Jeffrey Zhao and Dian Yu and Nan Du and Izhak Shafran and Karthik Narasimhan and Yuan Cao},
+  title={{ReAct}: Synergizing Reasoning and Acting in Language Models},booktitle={International Conference on Learning Representations},year={2023},url={https://arxiv.org/abs/2210.03629},note={Camera-ready version v3}}
+--- paper/v1-initial/sections/discussion.tex
++++ paper/v2-revised/sections/discussion.tex
+@@ -6,3 +6,5 @@
+ Tool grounding reduces reliance on model arithmetic but leaves tool selection, argument interpretation, timezone handling and explanation quality as separate risks. Prompt injection or malicious food descriptions must not widen access. Security claims require adversarial tests of actual endpoints, credentials and database policies; architecture diagrams alone are insufficient evidence. Goals should be user-configured and not presented as medical prescriptions.
+ 
+ This manuscript reports a design and prospective methodology. The authorized project documentation describes planned integration; no running prototype, deployed interface or formal E1--E5 result is independently verified here. Image-based food estimation, external health-record imports, wellness scores, LINE support and dashboards remain outside the stated MVP evidence. Those extensions should not be used to imply current completeness.
++
++The switch barrier deliberately sacrifices availability during an unacknowledged transition; E3 reports this coverage cost alongside wrong attribution. Three users and two acquisition sessions per scale offer only a feasibility sample. Neither repeated agent calls nor repeated task placements increase the number of independent people. The additional lifecycle, snapshot and scoring rules are proposed contracts: their presence in this manuscript is not evidence that concurrent software, hardware behavior or access policies have passed tests.
+--- paper/v1-initial/sections/evaluation.tex
++++ paper/v2-revised/sections/evaluation.tex
+@@ -4,7 +4,7 @@
+ \begin{table}[t]
+ \caption{Prospective evaluation matrix; every result is pending.}\label{tab:eval}
+ \centering\footnotesize\setlength{\tabcolsep}{4pt}
+-\begin{tabular}{@{}p{.08\columnwidth}p{.39\columnwidth}p{.44\columnwidth}@{}}\toprule
++\begin{tabular}{@{}P{.08\columnwidth}P{.39\columnwidth}P{.44\columnwidth}@{}}\toprule
+ ID & Reference / comparison & Main measures\\\midrule
+ E1 & Known masses; independent reference balance & MAE, RMSE, maximum error, drift\\
+ E2 & Labeled physical actions; delta vs FSM vs confirmation & Precision, recall, F1, prompts\\
+@@ -18,24 +18,33 @@
+ For each scale, reference loads spanning its documented operating range are placed repeatedly in randomized order. Record cold-start behavior, zero drift, settling time, and repeatability. Calibration and evaluation placements are kept separate. With errors $e_i=\hat m_i-m_i^*$ against an independent reference mass,
+ \begin{equation}\operatorname{MAE}=\frac{1}{N}\sum_{i=1}^N|e_i|,\quad
+ \operatorname{RMSE}=\sqrt{\frac{1}{N}\sum_{i=1}^Ne_i^2}.\label{eq:errors}\end{equation}
+-Report maximum absolute error as well. Reference-balance resolution and calibration uncertainty bound what can be inferred about the sensor. Test both assemblies rather than pooling them into an apparent increase in sample size.
++Propose five load levels $\{0,.2,.4,.6,.8\}M$ within documented capacity, five randomized placements per level in each of two sessions per scale: 50 test placements per scale. Calibration uses three separate placements at each of three reference levels (zero, $.4M$, $.8M$) and is fixed before that session's test block. Matching load values are allowed, but test placements are never used to fit coefficients. Record the exact physical masses, reference uncertainty, mounting and session conditions before collection. These are proposed counts, not completed trials. Report session/scale summaries and maximum absolute error as well. Reference-balance resolution and calibration uncertainty bound what can be inferred about the sensor. Test both assemblies rather than pooling them into an apparent increase in sample size.
+ 
+ \subsection{E2: Event Detection and Confirmation}
+ A labeled protocol includes drinking, lift-and-return without intake, refill, discard, spill, vessel change, and accidental contact. Ground truth combines a scripted action label, observer timing, and independently weighed transferred liquid. Ground-truth drink labels must not be produced by the same confirmation interface being evaluated. Compare (A) simple stable weight difference, (B) temporal FSM, and (C) FSM with human confirmation on the same observation traces. Retain all exclusions and timeouts.
+ 
+-For matched events, report
++Propose ten trials for each of the seven action classes, spread over two acquisition blocks, giving 70 action opportunities. Pilot/calibration traces are excluded. Freeze matching tolerance $\delta_t$ before test scoring using observer timing resolution and a justified timing allowance. Match predicted events to ground-truth ingestion events within $\delta_t$ of the labeled return using maximum-cardinality one-to-one matching; minimize total absolute time difference to break ties, then use event IDs. A matched event is TP, every unmatched recorded-ingestion prediction is FP (including duplicate detections), and every unmatched ground-truth drink is FN. Refills and spills are negative action opportunities; their false drink records count as FP. Unresolved/time-out drinks remain FN for final-record scoring, and unresolved coverage is reported separately. Also report specificity over labeled negative opportunities.
++
++Evaluate raw candidates and final records separately; ordinary inferred records count as final predictions unless rejected. Confirmation uses actual logged user responses, not oracle labels injected into the algorithm. A replay without such responses evaluates only the sensor stages. All methods see identical traces and fixed scoring rules. For matched events, report
+ \begin{equation}P=\frac{TP}{TP+FP},\quad R=\frac{TP}{TP+FN},\quad
+ F_1=\frac{2PR}{P+R}.\label{eq:detection}\end{equation}
+ Zero-denominator quantities are reported as undefined, not silently perfect. Report raw candidate performance separately from final recorded-intake performance. Count prompts, user corrections, and unresolved events. A high precision obtained by asking about every event must remain visible as interaction burden.
+ 
+ \subsection{E3: Shared-Device Attribution}
+-Three test users alternate control of both scales according to a scripted schedule. Include switches during an absent-cup interval, food weighing, and queued offline events. An external schedule establishes the intended event owner. Report wrong-owner records divided by attributable events, switch acknowledgement success, elapsed switch time, and unresolved events. Trace event IDs and session versions across retries. This is a consistency evaluation, not a measurement of identity recognition.
++Three test users alternate control of both scales according to a scripted schedule. Include switches during an absent-cup interval, food weighing, and queued offline events. An external schedule establishes the intended event owner. Report wrong-owner records divided by attributable events, switch acknowledgement success, elapsed switch time, and unresolved events. Propose six scenarios (ordinary switch, mid-lift switch, duplicate replay, lost acknowledgement, disconnection and restart), each for three intended owners and both scales: 36 scripted attempts. The expected outcomes follow the switch barrier in Section~\ref{sec:method}, including holds rather than guessed owners. Alongside wrong-owner/resolved-record rate, report resolved coverage over all eligible events and wrong-owner/all-eligible rate. Report activated switches over all requested switches; failed attempts and missing acknowledgements remain in the denominator. Trace event IDs and session versions across retries. This is a consistency evaluation, not a measurement of identity recognition.
+ 
+ \subsection{E4: Recording Effort}
+-Use a within-person crossover pilot with the three intended users performing matched hydration and food tasks in manual and semi-automatic conditions. Counterbalance condition order as far as an odd-sized pilot permits and log the actual sequence. Provide equivalent training and task quantities. Measure task time, explicit actions, omissions relative to the observer log, and completed tasks. Include confirmation and correction time, rather than counting only automatic records. Report paired participant-level summaries; this small convenience sample supports feasibility observations, not population-level effectiveness claims.
++Use a within-person crossover pilot with the three intended users performing matched hydration and food tasks in manual and semi-automatic conditions. Plan two sessions per participant, each with four matched tasks per condition (two hydration, two food). Use AB in one session and BA in the other, assigning the initial order before testing and rotating task variants: 16 planned tasks per person. Log actual order and deviations; training tasks are separate. Provide equivalent training and task quantities. Measure task time, explicit actions, omissions relative to the observer log, and completed tasks. Include confirmation and correction time, rather than counting only automatic records. Set a proposed 10-minute task deadline before collection. Retain timed-out tasks as incomplete with time reported as censored at the deadline; do not turn those into fast successful trials. Report each person's completion/omission proportions and median paired time differences for completed matched tasks, alongside counts of excluded incomplete pairs. Do not impute completion times or pool repeated tasks as independent people. Report paired participant-level summaries; this small convenience sample supports feasibility observations, not population-level effectiveness claims.
+ 
+ \subsection{E5: Agent Reliability and Authorization}
+-Prepare at least 30 fixed cases across daily and multi-day hydration, nutrition, compound queries, missing/conflicting data, and authorization/safety requests. Each case specifies the authenticated subject, fixture records, expected tool behavior, permitted data, numeric answers and provenance. Run each case repeatedly with the model identifier, prompt, tool schema, sampling settings, and workflow version recorded. Following the motivation of repeated agent evaluation~\cite{yao2024tau}, report both per-run correctness and consistency across repeats. Unauthorized disclosure is a failure even when a numeric answer is otherwise correct. No clinical safety claim follows from a small scripted benchmark.
++Propose 30 frozen cases: five each for daily hydration, multi-day hydration, nutrition, compound queries, missing/conflicting data, and authorization/adversarial requests. Run each case three times from a reset fixture and conversation, for 90 planned runs. Freeze model/provider identifier, sampling settings, prompt, tool schema, workflow version and fixture hash. Include day-boundary queries, a corrected source revision, malicious source text, forged identities, unavailable tools and upstream failures. These are test stimuli, not observations of a running agent.
++
++A deterministic oracle computes quantities from the fixture's authorized current revisions and accepted unit conversions. Freeze acceptable tool-call sequences (including equivalent permitted alternatives), rounding rules and expected statuses before runs. Score tool correctness $T_{ik}$, numeric/status correctness $N_{ik}$, source/version correctness $P_{ik}$ and authorization/safety $A_{ik}$ as binary components for case $i$, repeat $k$. Numeric tolerance is half of the declared last displayed unit after canonical conversion; no-data cases require the expected nonnumeric status, not a fabricated zero. An unauthorized call attempt fails $A_{ik}$ even if the backend denies it; backend non-disclosure is reported as a separate defense check. Strict run success is
++\begin{equation}S_{ik}=T_{ik}N_{ik}P_{ik}A_{ik},\quad
++\bar S=\frac{1}{90}\sum_{i=1}^{30}\sum_{k=1}^{3}S_{ik}.\label{eq:agent}\end{equation}
++Report component rates and family-level counts as well as empirical all-three-repeat case reliability,
++\begin{equation}C_3=\frac{1}{30}\sum_{i=1}^{30}\prod_{k=1}^{3}S_{ik}.\label{eq:repeat}\end{equation}
++This read-only metric is inspired by repeated evaluation~\cite{yao2024tau}, not a reproduction of its state-changing benchmark. Grade final answers and returned sources against the oracle, not by another unconstrained LLM. Have a second evaluator check semantic/adversarial judgments and record disagreements. Refusals and missing-data statements must match the case's expected policy. A correct number cannot compensate for wrong provenance or a privacy failure. No clinical safety guarantee follows from this small scripted suite.
+ 
+ \subsection{Reproducibility and Data Handling}
+-Before execution, freeze sensor parameters, software versions, stimulus schedules, case definitions and analysis rules. Save de-identified traces with record and correction relationships. Participant consent and applicable institutional review must precede real personal-data collection. Raw health records and identifiable screenshots do not belong in the public release. Disclose missing trials, device failures, exclusions and changes to the protocol.
++Before execution, freeze sensor parameters, software versions, stimulus schedules, case definitions and analysis rules. Keep acquisition-block and case identifiers for clustered descriptive summaries; do not treat temporally adjacent sensor windows or repeated agent runs as independent participants. Planned counts are feasibility choices, not a power calculation. Save de-identified traces with record and correction relationships. Participant consent and applicable institutional review must precede real personal-data collection. Raw health records and identifiable screenshots do not belong in the public release. Disclose missing trials, device failures, exclusions and changes to the protocol.
+--- paper/v1-initial/sections/introduction.tex
++++ paper/v2-revised/sections/introduction.tex
+@@ -8,3 +8,15 @@
+ The study asks: \textbf{RQ1}, can temporal sensing and event confirmation improve hydration recording in the presence of ambiguous mass changes? \textbf{RQ2}, can versioned shared-device attribution and semi-automatic entry support reliable records with less interaction than manual entry? \textbf{RQ3}, can tool-grounded summaries preserve numeric correctness, authorization, and provenance?
+ 
+ The paper contributes (1) a sensing-to-record architecture that preserves uncertainty and correction history, (2) a method combining mass-based candidate events, food portion semantics, and session-based attribution, and (3) a prospective E1--E5 evaluation linking sensing and conversational failures to observable metrics. Tool use is motivated by ReAct and Toolformer~\cite{yao2023react,schick2023}; it does not by itself establish truthful or authorized behavior. All components below describe a proposed design. No formal E1--E5 measurements or independently verified running deployment are reported.
++
++\begin{table}[t]
++\caption{Research questions and primary prospective outcomes. All outcomes remain unmeasured.}\label{tab:questions}
++\centering\footnotesize\setlength{\tabcolsep}{4pt}
++\begin{tabular}{@{}P{.10\columnwidth}P{.56\columnwidth}P{.25\columnwidth}@{}}\toprule
++RQ & Primary outcome / obligation & Evaluation\\\midrule
++1 & Final-record F1 alongside candidate F1 and prompt burden & E1 calibration; E2 detection\\
++2 & Wrong-owner rate with resolved coverage; paired task time with completion & E3 switching; E4 effort\\
++3 & Strict all-component run success and three-repeat case reliability & E5 agent tests\\\bottomrule
++\end{tabular}
++\end{table}
++Table~\ref{tab:questions} makes the integration contribution falsifiable. A method that improves apparent F1 by withholding unresolved events, or reduces reported time by omitting corrections, would not satisfy these obligations. The study does not establish a superior sensing algorithm or general-purpose agent.
+--- paper/v1-initial/sections/method.tex
++++ paper/v2-revised/sections/method.tex
+@@ -1,31 +1,57 @@
+ \section{Proposed Methodology}\label{sec:method}
+ \subsection{Calibration and Stable Observations}
+-Let $r_i$ be an HX711 reading and let $\hat m_i$ be calibrated mass in grams. A linear model fitted from reference masses is
++Let $r_i$ be an HX711 reading and $\hat m_i$ calibrated mass in g. Fit a linear per-scale model using reference loads,
+ \begin{equation}\hat m_i=a r_i+b.\label{eq:calibration}\end{equation}
+-The coefficients belong to a specific scale and mounting configuration. Repeated placements and zero-load checks are needed to characterize drift. A median over a sliding window suppresses isolated disturbances. A window is stable only when its range is below a calibrated tolerance $\epsilon$ for a dwell time $T_s$; unstable windows cannot finalize a quantity. Parameters are to be selected using calibration trials and fixed before evaluation, not chosen to improve reported test scores.
++A median over $W$ samples estimates stable mass. A window is valid only if all samples are valid, within the documented operating range, and its range remains at most $\epsilon$ for dwell time $T_s$. Saturation, stale samples and sensor errors invalidate it. A reference must be reacquired after restart, remounting or container reset. Calibration coefficients and uncertainty belong to one scale/mounting version.
+ 
+-\subsection{Hydration Candidate Events}
+-A finite-state machine (FSM) records a stable pre-lift mass, observes absence, waits for return, and requires a stable post-return mass (Fig.~\ref{fig:fsm}). The event begins at the lift transition. A short interval of unstable contact must not generate repeated lift events. For an unchanged vessel,
++The pre-test parameter manifest must freeze sampling rate $f_s$, window size $W$, $\epsilon$, $T_s$, absence threshold $\theta_L$, minimum positive difference $\theta_D$, maximum absence duration $T_A$, allowed mass range $[0,M]$, and density approximation $\rho$. Presence requires stable mass above $\theta_L$; absence requires mass below it for $T_s$. Values depend on calibration and the chosen vessel, and are not supplied as validated constants. A setup pilot selects them before held-out evaluation; every change creates a new manifest version.
++
++\subsection{Hydration Lifecycle and Candidate Events}
++Figure~\ref{fig:fsm} remains a high-level workflow; Table~\ref{tab:states} defines its lifecycle guards. The lift transition durably binds the pre-lift observations, calibration and session grant to a unique event. The sensor continues observing an in-flight event through a user switch. Invalid or unresolved comparisons cannot establish a new inferred-intake baseline without explicit reset and reacquisition.
++
++\input{figures/states}
++
++For a consistent vessel and two valid stable masses,
+ \begin{equation}\Delta m=\bar m_{\rm before}-\bar m_{\rm after},\qquad
+-\hat V=\frac{\Delta m}{\rho},\label{eq:volume}\end{equation}
+-where mass is in g, $\rho$ is the declared water-density approximation in g/mL, and $\hat V$ is a candidate volume in mL. Using $\rho\approx1$ is an engineering approximation for water, not a measured density for arbitrary beverages. The vessel-cancellation assumption fails after a container change.
+-
+-A positive change above a calibrated detection threshold produces a candidate. A negative change suggests refill; a near-zero change is ignored. A timeout, implausible change, or inconsistent vessel context is routed for confirmation rather than silently counted. A putative normal candidate may create a reversible inferred record. User-confirmed, inferred, corrected, and rejected events retain different statuses. Confirming an event records a human report, not independent physiological proof of ingestion.
++\hat V=\frac{\Delta m}{\rho}.\label{eq:volume}\end{equation}
++Here $\rho$ is in g/mL and $\hat V$ in mL. The approximation $\rho\approx1$ is declared for water only. A positive $\Delta m>\theta_D$ within the plausible range produces a candidate; $\Delta m<-\theta_D$ is refill-like, and $|\Delta m|\leq\theta_D$ is no detected change. Container substitution, a timeout or an invalid range is unresolved even if a difference can be calculated. The system does not automatically identify a new vessel.
+ 
+ \input{figures/fsm}
+ 
+-Each final record retains links to its pre/post observations, calibration version, candidate, and correction history. A spill can be observationally indistinguishable from a drink; the interface must permit undo and the evaluation must include such confounders. The correction does not erase the original estimate. Offline events retain identifiers on replay, and a repeated identifier must not create a second record.
++For uncertainty estimates $u_b,u_a$ of the stable pre/post masses,
++\begin{equation}u_{\Delta}^2=u_b^2+u_a^2-2\operatorname{Cov}(\bar m_b,\bar m_a).
++\label{eq:uncertainty}\end{equation}
++The root-sum-square shortcut is justified only if that covariance is negligible. Drift can correlate the observations; Eq.~\eqref{eq:uncertainty} specifies propagation, not an estimated confidence bound. E1 must estimate uncertainty before thresholds or detection limits are interpreted.
+ 
+-\subsection{Food Mass and Nutrient Semantics}
+-For an identified single food, the user tares the container, places the food, and confirms its identity and net mass. For nutrient $j$,
+-\begin{equation}m_{\rm net}=m_{\rm gross}-m_{\rm tare},\qquad
+-\hat n_j=\frac{m_{\rm net}}{100\ {\rm g}}c_j,\label{eq:nutrition}\end{equation}
+-where $c_j$ is the nutrient quantity per 100 g for the selected food and preparation state. The backend preserves units, food identifier, source, and source version. FoodData Central is one documented source~\cite{usda}; a Taiwan food-composition source may be selected and verified during implementation. Missing composition is not a zero nutrient value. For mixed meals without component weights, reference portions are labeled estimates and are not passed through Eq.~\eqref{eq:nutrition} using unknown container gross mass.
++A normal candidate may create a reversible inferred record; ambiguous candidates require an authenticated user response. A confirmation is a human report, not physiological ground truth. Preserve observation, candidate, disposition and correction links. Rejection or correction appends a revision rather than overwriting the original event. A spill can still imitate a drink, so inferred totals must remain identifiable.
+ 
+-\subsection{Multi-User Session Consistency}
+-Let a shared session version $v$ bind both scales to an active user. An event stores $v_e=v(t_{\rm start})$. Its owner is resolved from the corresponding trusted session record, even if the active session changes before the cup returns. FastAPI must authenticate the device and validate that version rather than accept an arbitrary user field. A transaction updates the active session and its monotonically increasing version. Events whose session context cannot be verified are held for resolution, not reassigned to the current user.
++\subsection{Food Quantities and Current-Revision Totals}
++For an identified single food with known preparation state,
++\begin{equation}\begin{aligned}
++m_{\rm net}&=m_{\rm gross}-m_{\rm tare},\\
++\hat n_j&=\frac{m_{\rm net}}{100\ {\rm g}}c_j,
++\end{aligned}\label{eq:nutrition}\end{equation}
++where $c_j$ carries nutrient $j$'s unit per 100 g. Negative net mass, unstable input or an unknown tare is invalid and requires re-taring. An explicitly observed empty tared container can represent zero; unknown mass cannot. Retain food ID, preparation state, source release, quantity basis and units. Missing composition remains null, not zero. Mixed meals without component weights use visibly labeled reference portions rather than applying Eq.~\eqref{eq:nutrition} to container gross mass~\cite{usda}.
+ 
+-\subsection{Agent Retrieval and Numeric Grounding}
+-Figure~\ref{fig:tools} specifies the retrieval path. Tool arguments are schema-checked, date ranges are bounded, and query results are scoped to the authenticated requestor. The backend computes hydration totals and nutritional sums; the model explains those values with source identifiers. A tool result includes its query interval, timezone, units, completeness indicator, and provenance. An empty history produces a missing-data statement, while an observed zero remains a numeric zero. No tool permits the model to modify an intake record or prescribe a medical treatment. Corrections remain explicit authenticated interface actions.
++Let $\mathcal R(q)$ contain only the current, non-rejected revision of each logical intake record at snapshot $q$. Inferred and confirmed hydration are reported separately:
++\begin{equation}H_s(I,q)=\sum_{\substack{r\in\mathcal R(q),\ t_r\in I\\\operatorname{status}(r)=s}} V_r,
++\quad s\in\{\mathrm{inferred},\mathrm{confirmed}\}.\label{eq:totals}\end{equation}
++Corrections supersede prior revisions atomically; a record contributes to at most one status partition. Nutrients sum only known compatible units over the same current revisions and return a missing-component count. A displayed total must identify partial coverage; it cannot imply complete dietary intake. Use unrounded backend quantities for sums and round only at presentation.
++
++\subsection{Coordinated Multi-User Session Switching}
++A shared monotonic session version $v$ covers both scales. Each event binds $v_e=v(t_{\rm start})$ and its owner through a device-authenticated, server-issued grant; upload time never determines ownership. A backend transaction alone is insufficient when workers hold stale state. We therefore propose a switch barrier:
++\begin{enumerate}
++\item Pause new event starts on both workers. Each durably logs and acknowledges its in-flight event IDs, sequence watermark and old session version. Existing events may finish under that binding.
++\item After both acknowledgements, FastAPI commits the new version using compare-and-swap. Historical in-flight bindings are retained; no version number is reused.
++\item Install the new grant on both workers. Activate new starts only after both acknowledge installation; each worker must observe the activation before resuming.
++\end{enumerate}
++A lost pause/install acknowledgement or disconnected worker prevents activation; physical actions during the hold are marked unresolved. Failed attempts remain logged and any committed-but-inactive version is never silently rolled back or reused. Historical completions are accepted only for the registered event IDs and authenticated sequence context. Duplicate IDs are idempotent; conflicting payloads are rejected. A restarted worker must resynchronize grants before new starts, while recoverable durable in-flight events retain their original owner. Unrecognized old starts, expired grants and unverifiable replay are quarantined. Grant freshness limits and sequence persistence belong in the pre-test manifest. This trades availability for attributable records and requires future implementation tests.
++
++\subsection{Consistent, Authorized Agent Retrieval}
++The retrieval flow in Fig.~\ref{fig:tools} uses six allowlisted read-only query functions (daily hydration, hydration history, food history, nutrition summary, goal progress and record sources). FastAPI derives the subject from authenticated user/service context; model-supplied identity is ignored for authorization. Tool requests validate schema, bounded date range and units before database access. Food descriptions and retrieved text are untrusted data and cannot issue tool instructions or expand the allowlist.
++
++A local day is $[d\ 00{:}00,(d+1)\ 00{:}00)$ in the declared IANA timezone, with each boundary converted to UTC. It is not assumed to be exactly 24 hours. Multi-day queries use the same half-open rule. A read-consistent database transaction supplies both totals and their source revisions at one snapshot $q$; concurrent correction must not mix old sources with new totals.
++
++Every result includes status, authorized subject binding, interval/timezone, snapshot identifier, units, completeness and missing counts, source record/revision IDs, quantity-basis and food/calibration versions where applicable, and tool/schema version. Daily response envelopes distinguish complete observed zero, no observations, partial coverage, denied access and upstream failure. Denied responses expose no other user's record existence or IDs. The model may summarize only returned facts; numeric and provenance consistency are checked separately in E5. Corrections are authenticated interface actions, never agent writes.
+ 
+ \input{figures/tools}
+--- paper/v1-initial/sections/related.tex
++++ paper/v2-revised/sections/related.tex
+@@ -10,13 +10,15 @@
+ \begin{table}[t]
+ \caption{Selected research perspectives and their relevance. The final column is our design interpretation, not a benchmark result.}\label{tab:related}
+ \centering\footnotesize\setlength{\tabcolsep}{4pt}
+-\begin{tabular}{@{}p{.19\columnwidth}p{.31\columnwidth}p{.42\columnwidth}@{}}\toprule
++\begin{tabular}{@{}P{.19\columnwidth}P{.31\columnwidth}P{.42\columnwidth}@{}}\toprule
+ Work & Studied focus & SmartIntake design implication\\\midrule
+-Playful Bottle~\cite{chiu2009} & Workplace sensing and persuasion & Examine routine recording in a fixed setting\\
++Bottle~\cite{chiu2009} & Workplace sensing and persuasion & Examine routine recording in a fixed setting\\
+ Smart bottles~\cite{cohen2022} & Quantity and recording accuracy & Separate mass accuracy from ingestion labels\\
+-ReAct / Toolformer~\cite{yao2023react,schick2023} & Model interaction with tools & Keep arithmetic in backend tools\\
++Tools~\cite{yao2023react,schick2023} & Model interaction with tools & Keep arithmetic in backend tools\\
+ $\tau$-bench~\cite{yao2024tau} & Policy and repeated agent reliability & Test authorization and repeatability\\\bottomrule
+ \end{tabular}
+ \end{table}
+ 
+ The gap addressed here is the joint treatment of ambiguous stationary sensing, shared-device attribution, and evidence-preserving conversational retrieval within this selected literature. This is a scoped integration contribution; it is not a claim that no prior system combines these features.
++
++The distinction is operational: the hydration comparison motivates an independent physical oracle (E1/E2), workplace interaction motivates a measured effort comparison (E4), and policy-oriented tool evaluation motivates subject isolation and repeated scoring (E5). Combining these concerns imposes session coordination and query-snapshot obligations that are specified below. This is our synthesis of the selected works, not evidence that those works lack every related mechanism.

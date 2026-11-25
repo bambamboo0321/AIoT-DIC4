@@ -1,0 +1,13 @@
+\begin{table*}[t]
+\caption{Proposed hydration lifecycle. Parameters are calibrated and frozen before evaluation; no threshold value is claimed as measured.}\label{tab:states}
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}P{.13\textwidth}P{.35\textwidth}P{.44\textwidth}@{}}\toprule
+State & Guard / next state & Output and re-arming rule\\\midrule
+INIT & Valid stable vessel and current grant $\to$ PRESENT & Acquire baseline; no intake output. Invalid input stays INIT.\\
+PRESENT & Absence for $T_s$ $\to$ ABSENT & Start one durable event and bind pre-mass/session; contact noise leaves state unchanged.\\
+ABSENT & Return before $T_A$ $\to$ RETURN; timeout $\to$ RESOLVE & Retain pre-mass and owner; do not create repeated lift events.\\
+RETURN & Stable valid window $\to$ CLASSIFY; new loss $\to$ ABSENT & No quantity until stable; the original timeout bounds the entire event.\\
+CLASSIFY & Valid vessel/range and $\Delta m$ $\to$ disposition; otherwise RESOLVE & Candidate, refill-like or no-change; save evidence and enter PRESENT with the validated post-mass.\\
+RESOLVE & Explicit user resolution/reset plus stable reacquisition $\to$ INIT & No inferred intake from invalid comparison; vessel changes always require reset.\\\bottomrule
+\end{tabular}
+\end{table*}

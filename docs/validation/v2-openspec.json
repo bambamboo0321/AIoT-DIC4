@@ -1,0 +1,83 @@
+{
+  "cli_version": "2.2.0",
+  "archive_observed": {
+    "change": "revise-ieee-conference-paper",
+    "archivedAs": "2026-11-25-revise-ieee-conference-paper",
+    "specsUpdated": true,
+    "requirementsAdded": 9
+  },
+  "checks": [
+    {
+      "command": "openspec validate --all --strict --json --no-interactive",
+      "exit": 0,
+      "result": {
+        "items": [
+          {
+            "id": "ieee-manuscript",
+            "type": "spec",
+            "valid": true,
+            "issues": [],
+            "durationMs": 4
+          }
+        ],
+        "summary": {
+          "totals": {
+            "items": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "byType": {
+            "change": {
+              "items": 0,
+              "passed": 0,
+              "failed": 0
+            },
+            "spec": {
+              "items": 1,
+              "passed": 1,
+              "failed": 0
+            }
+          }
+        },
+        "version": "1.0"
+      }
+    },
+    {
+      "command": "openspec validate --archived --json --no-interactive",
+      "exit": 0,
+      "result": {
+        "items": [
+          {
+            "id": "2026-11-25-initialize-ieee-paper",
+            "type": "change",
+            "valid": true,
+            "issues": [],
+            "durationMs": 9
+          },
+          {
+            "id": "2026-11-25-revise-ieee-conference-paper",
+            "type": "change",
+            "valid": true,
+            "issues": [],
+            "durationMs": 2
+          }
+        ],
+        "summary": {
+          "totals": {
+            "items": 2,
+            "passed": 2,
+            "failed": 0
+          },
+          "byType": {
+            "change": {
+              "items": 2,
+              "passed": 2,
+              "failed": 0
+            }
+          }
+        },
+        "version": "1.0"
+      }
+    }
+  ]
+}
