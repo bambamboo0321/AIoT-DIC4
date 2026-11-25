@@ -54,4 +54,4 @@ No Overleaf project ID, token or authenticated MCP connection was supplied. No s
 
 ## Verification completion
 
-Pending final smoke recheck after the missing latexdiff dependency is installed. Manuscript-specific compilation, bibliography and visual evidence belong to each version's validation report.
+Installed `ulem`, `grfext`, `preprint` and `cite` after explicit missing-package checks. A retry initially retained latexmk's prior failed state; forced regeneration exposed the remaining `grfext` dependency. After installing it, `latexmk -g -pdf -interaction=nonstopmode -halt-on-error diff.tex` exited 0 and produced the smoke difference PDF. IEEEtran/BibTeX and latexdiff smoke builds now both pass. These are environment tests, not research measurements. Manuscript-specific checks are recorded per version.
