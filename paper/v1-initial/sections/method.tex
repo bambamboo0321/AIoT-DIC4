@@ -1,0 +1,31 @@
+\section{Proposed Methodology}\label{sec:method}
+\subsection{Calibration and Stable Observations}
+Let $r_i$ be an HX711 reading and let $\hat m_i$ be calibrated mass in grams. A linear model fitted from reference masses is
+\begin{equation}\hat m_i=a r_i+b.\label{eq:calibration}\end{equation}
+The coefficients belong to a specific scale and mounting configuration. Repeated placements and zero-load checks are needed to characterize drift. A median over a sliding window suppresses isolated disturbances. A window is stable only when its range is below a calibrated tolerance $\epsilon$ for a dwell time $T_s$; unstable windows cannot finalize a quantity. Parameters are to be selected using calibration trials and fixed before evaluation, not chosen to improve reported test scores.
+
+\subsection{Hydration Candidate Events}
+A finite-state machine (FSM) records a stable pre-lift mass, observes absence, waits for return, and requires a stable post-return mass (Fig.~\ref{fig:fsm}). The event begins at the lift transition. A short interval of unstable contact must not generate repeated lift events. For an unchanged vessel,
+\begin{equation}\Delta m=\bar m_{\rm before}-\bar m_{\rm after},\qquad
+\hat V=\frac{\Delta m}{\rho},\label{eq:volume}\end{equation}
+where mass is in g, $\rho$ is the declared water-density approximation in g/mL, and $\hat V$ is a candidate volume in mL. Using $\rho\approx1$ is an engineering approximation for water, not a measured density for arbitrary beverages. The vessel-cancellation assumption fails after a container change.
+
+A positive change above a calibrated detection threshold produces a candidate. A negative change suggests refill; a near-zero change is ignored. A timeout, implausible change, or inconsistent vessel context is routed for confirmation rather than silently counted. A putative normal candidate may create a reversible inferred record. User-confirmed, inferred, corrected, and rejected events retain different statuses. Confirming an event records a human report, not independent physiological proof of ingestion.
+
+\input{figures/fsm}
+
+Each final record retains links to its pre/post observations, calibration version, candidate, and correction history. A spill can be observationally indistinguishable from a drink; the interface must permit undo and the evaluation must include such confounders. The correction does not erase the original estimate. Offline events retain identifiers on replay, and a repeated identifier must not create a second record.
+
+\subsection{Food Mass and Nutrient Semantics}
+For an identified single food, the user tares the container, places the food, and confirms its identity and net mass. For nutrient $j$,
+\begin{equation}m_{\rm net}=m_{\rm gross}-m_{\rm tare},\qquad
+\hat n_j=\frac{m_{\rm net}}{100\ {\rm g}}c_j,\label{eq:nutrition}\end{equation}
+where $c_j$ is the nutrient quantity per 100 g for the selected food and preparation state. The backend preserves units, food identifier, source, and source version. FoodData Central is one documented source~\cite{usda}; a Taiwan food-composition source may be selected and verified during implementation. Missing composition is not a zero nutrient value. For mixed meals without component weights, reference portions are labeled estimates and are not passed through Eq.~\eqref{eq:nutrition} using unknown container gross mass.
+
+\subsection{Multi-User Session Consistency}
+Let a shared session version $v$ bind both scales to an active user. An event stores $v_e=v(t_{\rm start})$. Its owner is resolved from the corresponding trusted session record, even if the active session changes before the cup returns. FastAPI must authenticate the device and validate that version rather than accept an arbitrary user field. A transaction updates the active session and its monotonically increasing version. Events whose session context cannot be verified are held for resolution, not reassigned to the current user.
+
+\subsection{Agent Retrieval and Numeric Grounding}
+Figure~\ref{fig:tools} specifies the retrieval path. Tool arguments are schema-checked, date ranges are bounded, and query results are scoped to the authenticated requestor. The backend computes hydration totals and nutritional sums; the model explains those values with source identifiers. A tool result includes its query interval, timezone, units, completeness indicator, and provenance. An empty history produces a missing-data statement, while an observed zero remains a numeric zero. No tool permits the model to modify an intake record or prescribe a medical treatment. Corrections remain explicit authenticated interface actions.
+
+\input{figures/tools}

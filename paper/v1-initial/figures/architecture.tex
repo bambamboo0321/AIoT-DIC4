@@ -1,0 +1,15 @@
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[font=\small,box/.style={draw,rounded corners=2pt,align=center,minimum height=11mm,text width=28mm},arr/.style={-{Stealth[length=2mm]},thick}]
+\node[box] (s) {Two scales\\Load Cell + HX711};
+\node[box,right=9mm of s] (p) {Raspberry Pi 4\\sensor worker / FSM};
+\node[box,right=9mm of p] (a) {FastAPI\\validation / arithmetic};
+\node[box,right=9mm of a] (d) {Supabase\\PostgreSQL};
+\node[box,below=12mm of p] (u) {Discord\\selection / correction};
+\node[box,below=12mm of a] (n) {n8n AI agent\\read-only tool choice};
+\draw[arr] (s)--(p);\draw[arr] (p)--node[above=6mm,font=\footnotesize]{device auth}(a);\draw[arr,<->] (a)--(d);
+\draw[arr,<->] (u)--(n);\draw[arr] (n)--node[right,font=\footnotesize,align=left]{trusted subject\\authorized tools}(a);
+\draw[arr] (u.north east)--node[above,sloped,font=\footnotesize]{user action}(a.south west);
+\end{tikzpicture}
+\caption{Proposed architecture. User actions and agent queries cross separate authorization paths; physical observations do not establish ingestion or identity by themselves.}\label{fig:architecture}
+\end{figure*}

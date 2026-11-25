@@ -1,0 +1,41 @@
+\section{Experimental Evaluation Plan}\label{sec:evaluation}
+All experiments in this section are prospective. No measurement table, usability improvement, or agent success rate has been obtained for \sys{}. Table~\ref{tab:eval} separates the intended evidence from the research questions. Protocol decisions and actual calibration parameters must be recorded before collecting test data.
+
+\begin{table}[t]
+\caption{Prospective evaluation matrix; every result is pending.}\label{tab:eval}
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{.08\columnwidth}p{.39\columnwidth}p{.44\columnwidth}@{}}\toprule
+ID & Reference / comparison & Main measures\\\midrule
+E1 & Known masses; independent reference balance & MAE, RMSE, maximum error, drift\\
+E2 & Labeled physical actions; delta vs FSM vs confirmation & Precision, recall, F1, prompts\\
+E3 & Scripted three-user, two-scale switches & Wrong attribution, success, latency\\
+E4 & Matched tasks: manual vs semi-automatic & Time, actions, omissions, completion\\
+E5 & Frozen tool fixtures and expected answers & Tool choice, values, sources, access safety\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{E1: Weight Accuracy and Stability}
+For each scale, reference loads spanning its documented operating range are placed repeatedly in randomized order. Record cold-start behavior, zero drift, settling time, and repeatability. Calibration and evaluation placements are kept separate. With errors $e_i=\hat m_i-m_i^*$ against an independent reference mass,
+\begin{equation}\operatorname{MAE}=\frac{1}{N}\sum_{i=1}^N|e_i|,\quad
+\operatorname{RMSE}=\sqrt{\frac{1}{N}\sum_{i=1}^Ne_i^2}.\label{eq:errors}\end{equation}
+Report maximum absolute error as well. Reference-balance resolution and calibration uncertainty bound what can be inferred about the sensor. Test both assemblies rather than pooling them into an apparent increase in sample size.
+
+\subsection{E2: Event Detection and Confirmation}
+A labeled protocol includes drinking, lift-and-return without intake, refill, discard, spill, vessel change, and accidental contact. Ground truth combines a scripted action label, observer timing, and independently weighed transferred liquid. Ground-truth drink labels must not be produced by the same confirmation interface being evaluated. Compare (A) simple stable weight difference, (B) temporal FSM, and (C) FSM with human confirmation on the same observation traces. Retain all exclusions and timeouts.
+
+For matched events, report
+\begin{equation}P=\frac{TP}{TP+FP},\quad R=\frac{TP}{TP+FN},\quad
+F_1=\frac{2PR}{P+R}.\label{eq:detection}\end{equation}
+Zero-denominator quantities are reported as undefined, not silently perfect. Report raw candidate performance separately from final recorded-intake performance. Count prompts, user corrections, and unresolved events. A high precision obtained by asking about every event must remain visible as interaction burden.
+
+\subsection{E3: Shared-Device Attribution}
+Three test users alternate control of both scales according to a scripted schedule. Include switches during an absent-cup interval, food weighing, and queued offline events. An external schedule establishes the intended event owner. Report wrong-owner records divided by attributable events, switch acknowledgement success, elapsed switch time, and unresolved events. Trace event IDs and session versions across retries. This is a consistency evaluation, not a measurement of identity recognition.
+
+\subsection{E4: Recording Effort}
+Use a within-person crossover pilot with the three intended users performing matched hydration and food tasks in manual and semi-automatic conditions. Counterbalance condition order as far as an odd-sized pilot permits and log the actual sequence. Provide equivalent training and task quantities. Measure task time, explicit actions, omissions relative to the observer log, and completed tasks. Include confirmation and correction time, rather than counting only automatic records. Report paired participant-level summaries; this small convenience sample supports feasibility observations, not population-level effectiveness claims.
+
+\subsection{E5: Agent Reliability and Authorization}
+Prepare at least 30 fixed cases across daily and multi-day hydration, nutrition, compound queries, missing/conflicting data, and authorization/safety requests. Each case specifies the authenticated subject, fixture records, expected tool behavior, permitted data, numeric answers and provenance. Run each case repeatedly with the model identifier, prompt, tool schema, sampling settings, and workflow version recorded. Following the motivation of repeated agent evaluation~\cite{yao2024tau}, report both per-run correctness and consistency across repeats. Unauthorized disclosure is a failure even when a numeric answer is otherwise correct. No clinical safety claim follows from a small scripted benchmark.
+
+\subsection{Reproducibility and Data Handling}
+Before execution, freeze sensor parameters, software versions, stimulus schedules, case definitions and analysis rules. Save de-identified traces with record and correction relationships. Participant consent and applicable institutional review must precede real personal-data collection. Raw health records and identifiable screenshots do not belong in the public release. Disclose missing trials, device failures, exclusions and changes to the protocol.

@@ -1,0 +1,14 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\footnotesize,box/.style={draw,align=center,rounded corners=2pt,text width=33mm,minimum height=7mm},arr/.style={-{Stealth[length=1.6mm]}}]
+\node[box] (a) {Stable cup present};
+\node[box,below=6mm of a] (b) {Lift: bind session\\save pre-lift mass};
+\node[box,below=6mm of b] (c) {Absent / wait for return};
+\node[box,below=6mm of c] (d) {Stable return / compare};
+\node[box,below=10mm of d,xshift=-19mm] (e) {Candidate / reversible\\record or confirmation};
+\node[box,below=10mm of d,xshift=19mm] (f) {Refill, no change,\\or unresolved event};
+\draw[arr] (a)--(b);\draw[arr](b)--(c);\draw[arr](c)--(d);
+\draw[arr](d)--(e);\draw[arr](d)--(f);
+\end{tikzpicture}
+\caption{Proposed hydration workflow. The comparison creates an interpretable event; it cannot distinguish drinking from every other source of liquid loss.}\label{fig:fsm}
+\end{figure}
